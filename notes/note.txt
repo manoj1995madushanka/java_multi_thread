@@ -29,3 +29,18 @@ two ways to create threads
     extends thread class
     implement runnable interface
 
+** Thread termination **
+
+thread.interrupt() method throws a InterruptedException
+
+for close application need all the threads are terminated( by default, the application will not stop as long as at least
+one thread is still running)
+
+if a thread finished its work, but the application is still running,we want to clean up te thread's resources
+
+if a thread misbehaving, we want to stop it
+
+When can we interrupt a thread
+    If the thread is executing a method that throws an InterruptedException
+    If the thread's code is handling the interrupt signal explicitly
+
