@@ -1,0 +1,31 @@
+why we need threads
+    1. performance
+    2.responsiveness
+
+examples of poor responsiveness
+    waiting for customer support
+    late response from person
+    no feedback from an application
+
+responsiveness -> concurrency = multitasking
+performance -> parallelism
+
+we don't need multiple cores to achieve multitasking
+
+threads are sharing files, heap and code.
+
+thread contain stack and instructor pointer
+
+responsiveness achieved by concurrency
+
+performance achieved by parallelism
+
+thread scheduling - first come, first served drawback is when very large thread comes first it causes a starvation
+
+OS thread schedule using Epochs
+    that means OS divided the time into equal time slots called epochs
+
+two ways to create threads
+    extends thread class
+    implement runnable interface
+
