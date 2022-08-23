@@ -3,7 +3,9 @@ package org.main;
 import org.thead.lesson1.HackerVsPoliceGame;
 import org.thead.lesson1.ThreadCreate;
 import org.thread.lesson2.BlockingTask;
+import org.thread.lesson2.InterruptSignalListener;
 
+import java.math.BigInteger;
 import java.util.Random;
 
 /**
@@ -32,5 +34,13 @@ public class App {
         //without below line application is still runs when main thread already stopped
         thread.interrupt();
 
+    }
+
+    public static void interruptSignalParser() {
+        Thread thread = new Thread(new InterruptSignalListener(new BigInteger("10000"), new BigInteger("5000000")));
+        thread.start();
+
+        // send interrupt signal
+        thread.interrupt();
     }
 }
