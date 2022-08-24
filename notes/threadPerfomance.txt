@@ -1,0 +1,17 @@
+performance in multithreading
+    Latency : the time to completion of a task. measured in time units.
+    Throughput : The amount of tasks completed in a given period. measured in tasks/time unit
+
+Latency
+[=========Task=============]
+<-------Latency=T---------->
+
+[=Task1=]
+[=Task2=]
+...
+[=TaskN=]
+<--Latency=T/N-->
+
+Theoretical reduction of latency by N = performance improvement by a factor of N.
+
+Can not break any task into subtasks
