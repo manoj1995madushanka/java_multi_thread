@@ -44,3 +44,7 @@ When can we interrupt a thread
     If the thread is executing a method that throws an InterruptedException
     If the thread's code is handling the interrupt signal explicitly
 
+Daemon Thread
+    background threads that do not prevent the application from existing if the main thread terminates
+   file auto saver is kind of daemon thread
+
