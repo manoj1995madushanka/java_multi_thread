@@ -48,3 +48,10 @@ Daemon Thread
     background threads that do not prevent the application from existing if the main thread terminates
    file auto saver is kind of daemon thread
 
+Thread join
+    we can not control order of thread complete
+    suppose thread B used some value after thread A finished calculation
+    In this scenario Thread B need to check Thread A is done or not his task
+    For checking this looping Thread B waste some CPU cycles
+    That is the reason to have Thread join functionality
+    After joining A and B , B is wakes up after A going to sleep
