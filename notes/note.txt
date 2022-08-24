@@ -55,3 +55,8 @@ Thread join
     For checking this looping Thread B waste some CPU cycles
     That is the reason to have Thread join functionality
     After joining A and B , B is wakes up after A going to sleep
+
+From thread.join
+    more control over independent threads
+    safety collect and aggregate results
+    gracefully handle runaway threads using thread.join(timeout)
