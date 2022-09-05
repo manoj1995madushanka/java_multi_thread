@@ -1,0 +1,9 @@
+Apache jmeter is java performance automation tool
+does not require writing any code
+
+for our thoghput_performance example :
+throughput = number of request/ test duration
+
+
+
+

@@ -1,0 +1,11 @@
+thread pooling reduced time for create threads
+it creates threads initially and use when they need
+JDM comes with built-in thead pool with queue(tasks will added to this queue and starts process when thread free)
+
+int numOfThreads = 4;
+Executor executor = Executors.newFixedThreadPool(numberOfThreads);
+Runnable task = .... // some codes
+executor.execute(task); // this line will add task to queue
+
+using fixed thread pool, we maintain constant number of threads, and eliminate the need to recreate the threads
+
