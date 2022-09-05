@@ -4,7 +4,9 @@ import org.thread.lesson1.HackerVsPoliceGame;
 import org.thread.lesson2.BlockingTask;
 import org.thread.lesson2.InterruptSignalListener;
 import org.thread.join.lesson3.FactorialThread;
+import org.thread.performance.ImageProcess;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,9 +25,15 @@ public class App {
         }*/
         // hackerVsPoliceGameTrigger();
 
-        try {
+        /*try {
             calculateFactorialTest();
         } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }*/
+
+        try {
+            ImageProcess.recolorImage();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
