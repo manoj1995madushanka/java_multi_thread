@@ -60,3 +60,19 @@ From thread.join
     more control over independent threads
     safety collect and aggregate results
     gracefully handle runaway threads using thread.join(timeout)
+
+
+Latency : The time to completion of a task.Measured in time units.
+
+Throughput : The amount of tasks completed in a given period. Measured in tasks/time unit.
+
+There are 3 types of tasks
+    Parallelized Tasks
+    Unbreakable/Sequential tasks
+    Partially parallelized, Partially Sequential tasks
+
+Multithreaded application performance criteria
+    Latency, Throughput
+
+
+

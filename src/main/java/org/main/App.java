@@ -1,16 +1,14 @@
 package org.main;
 
-import org.thead.lesson1.HackerVsPoliceGame;
-import org.thead.lesson1.ThreadCreate;
+import org.thread.lesson1.HackerVsPoliceGame;
 import org.thread.lesson2.BlockingTask;
 import org.thread.lesson2.InterruptSignalListener;
-import org.threadjoin.lesson3.FactorialThread;
+import org.thread.join.lesson3.FactorialThread;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Hello world!

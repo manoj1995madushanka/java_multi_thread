@@ -1,4 +1,4 @@
-package org.threadjoin.lesson3;
+package org.thread.join.lesson3;
 
 import java.math.BigInteger;
 

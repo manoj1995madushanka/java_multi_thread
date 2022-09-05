@@ -1,4 +1,4 @@
-package org.thead.lesson1;
+package org.thread.lesson1;
 
 import java.util.ArrayList;
 import java.util.List;
