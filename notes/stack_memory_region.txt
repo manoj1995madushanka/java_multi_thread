@@ -1,0 +1,18 @@
+Stack is memory region where
+    methods are called
+    arguments are passed
+    local variables are stored
+
+
+stack + instruction pointer = state of each thread's execution
+
+
+stack's properties
+    all variables belong to the thread executing on that stack
+    statically allocated when the thread is created
+    the stack's size is fixed,a nd relatively small ( platform specific )
+    if our calling hierarchy is too deep, we may get a StackOverFlow Exception.(risky with recursive calls)
+
+
+
+
