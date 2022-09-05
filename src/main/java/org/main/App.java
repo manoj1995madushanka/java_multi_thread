@@ -4,7 +4,7 @@ import org.thread.lesson1.HackerVsPoliceGame;
 import org.thread.lesson2.BlockingTask;
 import org.thread.lesson2.InterruptSignalListener;
 import org.thread.join.lesson3.FactorialThread;
-import org.thread.performance.ImageProcess;
+import org.thread.latency_performance.ImageProcess;
 
 import java.io.IOException;
 import java.math.BigInteger;
