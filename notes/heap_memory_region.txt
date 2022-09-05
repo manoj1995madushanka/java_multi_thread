@@ -1,0 +1,33 @@
+head is a shared memory region that belongs to the process
+all the threads shared data available in heap
+
+what is allocated on the heap?
+    Objects(anything created with the new operator)
+        String,Object,Collection,...
+    Members of classes
+    static variables
+
+
+Heap is governed and managed by Garbage Collector
+Objects : stay as long as we have a reference to them
+Members of classes : stay as long as we have a reference to them
+Static variables : stay forever
+
+References != Objects
+
+Object referenceVar1 = new Object();
+Object referenceVar2 = referenceVar1; // here not creating new object and pointing same heap object
+
+References
+    can be allocated on the stack
+    can be allocated on the heap if they are members of a class
+
+Objects
+    always allocated on the heap
+
+
+
+
+
+
+
