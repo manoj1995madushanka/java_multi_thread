@@ -1,0 +1,54 @@
+Synchronized
+    Locking mechanism
+    Used to restrict access to a critical section or entire method to a single thread at a time
+
+
+
+
+Two ways to use synchronized keyword
+
+
+
+   public synchronized void count(){}
+
+    public void method1(){
+        synchronized(lockingObj){}
+    }
+
+
+
+Atomic Operations
+    All reference assignments are atomic
+    we can get and set references to objects atomatically
+
+
+
+Object a= new Object();
+Object b= new Object();
+a = b; // atomic
+
+
+
+for automic operations we don't need to synchronize them because java provides synchronizations for those
+
+
+
+all assignments to primitive types are safe excepts long and double (long and double 32 bits)
+that means reading from, and writing to following types
+    int, short, byte, float, char, boolean
+
+
+
+using volatile keyword we can create long and double automic thread safe operations
+that means they are guarantee to happen single hardware operation
+    volatile double x = 1.0;
+    volatile double y = 9.0;
+    x = y;
+
+
+
+classes in the java.util.concurrent.atomic package do atmic operations
+
+
+
+Knowledge about atomic operations is key to high performance
