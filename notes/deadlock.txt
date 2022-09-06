@@ -1,0 +1,23 @@
+conditions for deadlocks
+    Mutual Execution : Only one thread can have exclusive access to resource
+    Hold & Wait : At least one thread is holding a resource and waiting for other resource
+    Non-preemptive allocation : A resource is released only after the thread is done using it.
+    Circular wait : A chain of at least two threads each one is holding one resource and waiting for another resource
+
+solution for deadlocks
+    Avoid Circular wait - Enforce a strict order in lock acquisition
+
+Other techniques for resolve deadlocks
+    Deadlock detection : watchdog
+    Thread interruption (not possible with synchronized)
+    tryLock operations (not possible with synchronized)
+
+Locking strategies
+    Coarse-grained locking (loch entire block using synchronized) : not good for high performance
+    Fine-grained locking - gives better parallelism but cause to deadlocks
+
+Resolve deadlocks :
+    solved by avoiding circular wait and hold
+    Lock resources in the same order, everywhere
+
+

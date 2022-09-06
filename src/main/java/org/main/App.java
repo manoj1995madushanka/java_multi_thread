@@ -1,5 +1,6 @@
 package org.main;
 
+import org.thread.deadlock.DeadLock;
 import org.thread.lesson1.HackerVsPoliceGame;
 import org.thread.lesson2.BlockingTask;
 import org.thread.lesson2.InterruptSignalListener;
@@ -38,7 +39,15 @@ public class App {
             throw new RuntimeException(e);
         }*/
 
-        CriticalSection.testCriticalSection();
+        //CriticalSection.testCriticalSection();
+
+        // deadlock test
+        DeadLock.Intersection intersection = new DeadLock.Intersection();
+        Thread trainAThread = new Thread(new DeadLock.TrainA(intersection));
+        Thread trainBThread = new Thread(new DeadLock.TrainB(intersection));
+
+        trainAThread.start();
+        trainBThread.start();
     }
 
     private static void hackerVsPoliceGameTrigger() {
