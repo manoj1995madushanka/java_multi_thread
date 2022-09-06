@@ -1,0 +1,54 @@
+Works just like the synchronized keyword applied on an object
+Requires explicit locking and unlocking
+
+ReentrantLock - disadvantage
+    Lock lockObject = new ReentrantLock();
+    ...
+    public void use() throws SomeException{
+        lockObject.lock();
+        throwExceptionMethod();
+        lockObject.unlock(); // this line never reach when exception throws
+    }
+
+
+ReentrantLock - solution
+    Lock lockObject = new ReentrantLock();
+    ...
+    public void use() throws SomeException{
+        lockObject.lock();
+        try{
+            someOperations();
+            return value;
+        }
+        finally{
+            lockObject.unlock();
+        }
+    }
+
+ReentrantLock - Why?
+    Query methods - for testing
+        getQueuedThreads() - returns a list of threads waiting to acquire a lock
+        getOwner() - returns the thread that currently owns the lock
+        isHeldByCurrentThread() - queries if the lock is held by the current thread
+        isLocked() - queries if the lock is held by any thread
+
+By default, the ReentrantLock as well as synchronized keyword do not guarantee any fairness
+
+thread.interrupt() method used for manually interrupt thread
+
+Lock lockObject = new ReentrantLock();
+if(lockObject.tryLock()) {logic} // best way to lock
+
+Note about tryLock()
+    Under no circumstances does the tryLock() method block
+    Regardless of the state of the lock, it always returns immediately
+    Real time applications where suspending a thread on a lock() method is unacceptable.
+    Examples : Video/Image processing
+               High speed/ low latency trading systems
+               User interface applications
+
+Using tryLock()
+    we avoid blocking the real time thread
+    kept application responsive
+    performed operations atomically
+
