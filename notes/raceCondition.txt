@@ -1,0 +1,64 @@
+resources:
+https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.4
+https://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.3.1.4
+https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.7
+
+Race condition is condition when multiple threads are accessing a shared resource.
+At least one thread is modifying the resource.
+The timing of threads scheduling may cause incorrect results
+The core of the problem is non-atomic operations performed on the shared resource
+
+Race Condition - Solution
+    Identification of the critical section where the race condition is happening
+    Protection of the critical section by synchronized block
+
+public synchronized void increment(){
+    items++;
+}
+public synchronized void decrement(){
+    items--;
+}
+
+Data Race - Problem
+    Compiler and CPU may execute the instructions out of order to optimize performance and utilization
+    They will do so while maintaining the logical correctness of the code
+    Out of order execution by the compiler and CPU are important features to speed up the code
+
+The compiler re-arranges instructions for better
+    Branch prediction(optimized loops,if statements,...)
+    Vectorization - parallel instruction execution(SIMD)
+    Prefetching instructions - better cache performance
+
+CPU re-arranges instructions for better hardware units utilization
+
+This happens for multi threaded applications
+
+
+
+some code :
+public void increment1(){
+x++;y++;
+}
+public void increment1(){
+y++;x++;
+}
+
+
+Data Race - Consequences
+    May leads to unexpected, paradoxical and incorrect results.
+
+
+Two problems with multithreaded applications
+    Race Condition
+    Data Race
+
+Both problems involve in
+    Multiple threads
+    At least one is modifying a shared variable
+
+Both problems may result in unexpected and incorrect results.
+
+Synchronized : solves both race condition and data race.but has a performance penalty
+
+Volatile : solves race condition for read/write, from/to long and double
+           Solves all data races by guaranteeing order
