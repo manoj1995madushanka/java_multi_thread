@@ -5,6 +5,7 @@ import org.thread.lesson2.BlockingTask;
 import org.thread.lesson2.InterruptSignalListener;
 import org.thread.join.lesson3.FactorialThread;
 import org.thread.latency_performance.ImageProcess;
+import org.thread.resource_sharing.CriticalSection;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -16,7 +17,7 @@ import java.util.List;
  * Hello world!
  */
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         /*ThreadCreate threadCreate = new ThreadCreate();
         try {
             threadCreate.createNewTread();
@@ -31,11 +32,13 @@ public class App {
             throw new RuntimeException(e);
         }*/
 
-        try {
+        /*try {
             ImageProcess.recolorImage();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+
+        CriticalSection.testCriticalSection();
     }
 
     private static void hackerVsPoliceGameTrigger() {
