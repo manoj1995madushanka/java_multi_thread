@@ -1,0 +1,20 @@
+CAS - CompareAndSet operation
+
+AtomicReference<T>
+    T can be object and after initialized this way T will do atomic operation
+    V get() : returns the current value
+    void set(V newValue) : sets the value to newValue
+
+boolean compareAndSet(V expectedValue, V newValue)
+    Assigns new value if currentValue == expectedValue
+    Ignores the new value if the currentValue != expectedValue
+
+CAS - compareAndSet
+    Available in all Atomic class
+    Compiles into an atomic hardware operation
+    Many other atomic methods are internally implemented using CAS
+
+AtomicReference<T> - wraps a reference to an object, allows us to perform atomic operations on that reference,
+including the compareAndSet()
+CompareAndSet - Atomic operation available in all atomic classes
+
