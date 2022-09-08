@@ -1,0 +1,65 @@
+Can be used to restrict the number of "users" to a particular resources or a group of resources
+Unlike the locks that allows only one "user" per resource
+The semaphore can restrict any given number of users to a resource
+
+ex: parking lot ( only allows lot sized vehicle amount )
+
+How to use Semaphores
+    Semaphore semaphore = new Semaphore(NUMBER_OF_PERMITS);
+    semaphore.acquire(n); // NUMBER_OF_PERMITS - n now available
+    useResource();
+    semaphore.release(n); // NUMBER_OF_PERMITS now available
+
+semaphore.acquire(n); // lock n semaphores
+
+Semaphore is not well suited for locks because
+    Semaphore doesn't have a notion of owner thread
+    Many threads can acquire a permit
+    The same thread can acquire the semaphore multiple times
+    The binary semaphore ( initialized with 1 ) isn't reentrant
+    Semaphore can be released by any thread
+    
+Semaphore block
+    Semaphore semaphore = new Semaphore(NUMBER_OF_PERMITS);
+    semaphore.acquire(NUMBER_OF_PERMITS);
+    semaphore.acquire(1);// semaphore now blocked
+
+
+Semaphore is a synchronization tool
+Semaphore as general  case for a lock - permit issuing authority
+Can restrict the number of users per critical section/resource
+Differences between locks and semaphores
+    Any thread can release a semaphore(no ownership)
+Inter-thread communication for producer consumer, using semaphore
+
+
+=====Thread Communication======
+Calling the acquire() on a semaphore is equivalent to checking the condition "Is number of permits > 0"
+If the condition is not met - thread A goes to sleep until another thread changes the semaphore's state
+When thread B calls the release() method, thread A wakes up
+Thread A checks the condition "Is number of permits > 0"
+    If it is, thread A continues to the next instruction
+
+
+===Inter-thread - Condition.await()===
+
+suspend the thread, and wait for a state change
+
+void await() - unlock lock, wait until signalled
+long awaitNanos( long nanosTimeout ) - wait no longer than nonosTimeout
+boolean await(long time, TimeUnit unit) - wait no longer than time, in given time units
+boolean awaitUntil(Date deadline) - wake up before the deadline date
+
+
+===Inter-tread - Condition.signal()===
+
+void signal() - wakes up a single thread, waiting on the condition variable
+A thread that wakes up has to reacquire the lock associated with the condition variable
+If currently no thread is waiting on the condition variable, the signal method doesn't do anything
+
+===Inter-thread - condition.signalAll()===
+
+void signalAll() - Broadcast a signal to all threads currently waiting on the condition variable
+doesn't need to know how many (if at all) threads are waiting on the condition variable
+
+
