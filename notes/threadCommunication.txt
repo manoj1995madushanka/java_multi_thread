@@ -1,0 +1,38 @@
+wait(), notify() and notifyAll()
+
+The object class contains the following methods
+    public final void wait() throws InterruptedException
+    public final void notify()
+    public final void notifyAll()
+
+Every java class inherits from the object class
+We can use any object as a condition variable and a lock(using the synchronized keyword)
+
+wait() - causes the current thread to wait until another thread wakes it up.
+
+In the wait state, the thread is not consuming any CPU
+
+notify() - wakes up a single thread waiting on that object
+notifyAll() - wakes up all the threads waiting on that object
+
+To call wait, notify or notifyAll methods we need to acquire the monitor of that object(use synchronized on that object)
+
+=== Object signalling vs Condition variables ===
+
+Object Signaling                     Condition Variable
+
+synchronized(object){}               lock.lock(); lock.unlock()
+object.wait()                        condition.await()
+object.notify()                      condition.signal()
+object.notifyAll()                   condition.signalAll()
+
+
+
+we can implement guard against OutOfMemoryException
+
+whenever using a queue to decouple multithreaded components, apply back-pressure and limit the size of the queue
+
+wait, notify and notifyAll called as condition variables
+
+
+
