@@ -1,0 +1,128 @@
+public class Metrics {
+        private long count;
+        private double average;
+        private long max;
+
+        private Object countLock = new Object();
+        private Object averageLock = new Object();
+        private Object maxLock = new Object();
+
+        public void addSample(long sample) {
+            synchronized (countLock) {
+                synchronized (averageLock) {
+                    synchronized (maxLock) {
+                        average = (average * count + sample)/(++count);
+                        max = Math.max(max, sample);
+                    }
+                }
+            }
+        }
+
+        public void reset() {
+            synchronized (maxLock) {
+                synchronized (averageLock) {
+                    synchronized (countLock) {
+                        count = 0;
+                        max = Integer.MIN_VALUE;
+                        average = 0.0;
+                    }
+                }
+            }
+        }
+
+        public long getCount() {
+            synchronized (countLock) {
+                return count;
+            }
+        }
+
+        public long getMax() {
+            synchronized (maxLock) {
+                return max;
+            }
+        }
+
+        public double getAverage() {
+            synchronized (averageLock) {
+                return average;
+            }
+        }
+}
+
+There is a deadLock happen in the addSample and reset methods
+===============================================================
+
+REFACTOR ABOVE CODE AS BELOW, THEN WHAT IS DOWNSIDE
+
+public class Metrics {
+        private long count;
+        private double average;
+        private long max;
+
+        public synchronized void addSample(long sample) {
+            average = (average * count + sample) / (++count);
+            max = Math.max(max, sample);
+        }
+
+        public synchronized void reset() {
+            count = 0;
+            max = Integer.MIN_VALUE;
+            average = 0.0;
+        }
+
+        public synchronized long getCount() {
+            return count;
+        }
+
+        public synchronized long getMax() {
+            return max;
+        }
+
+        public synchronized double getAverage() {
+            return average;
+        }
+    }
+
+The downside is if the majority of the calls on that instance of the Metrics class are the
+getAverage(), getMax() and getCount() methods, only one of those methods will be
+executed at any given moment. In that workload our performance is going to be much worse
+than having a separate lock for each of the methods.
+
+============================================================================================
+For performance reasons the code from previous questions was modified even further:
+
+public class Metrics {
+        private long count;
+        private double average;
+        private long max;
+
+        public synchronized void addSample(long sample) {
+            average = (average * count + sample) / (++count);
+            max = Math.max(max, sample);
+        }
+
+        public synchronized void reset() {
+            count = 0;
+            max = Integer.MIN_VALUE;
+            average = 0.0;
+        }
+
+        public long getCount() {
+            return count;
+        }
+
+        public long getMax() {
+            return max;
+        }
+
+        public double getAverage() {
+            return average;
+        }
+    }
+
+Now multiple threads can execute getCount(), getMax() and getAverage() at the same time.
+Are there any potential problems with this approach?
+
+There are no guarantees that the data returned from those 3 methods getCount(), getMax() and getAverage()
+is going to be correct. We need to declare count, max and average, as volatile,
+or make the getter methods synchronized. This way race conditions and data races will not happen

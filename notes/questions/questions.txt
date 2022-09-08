@@ -1,0 +1,184 @@
+multi threads in a single process shares
+    code
+    process's open files
+    heap
+    process's metadata
+============================================
+
+starvation
+
+===============================================
+What is the output?
+
+Thread thread1 = new Thread(new Runnable() {
+    @Override
+    public void run() {
+        System.out.println("I'm going for a walk");
+    }
+});
+
+Thread thread2 = new Thread(new Runnable() {
+    @Override
+    public void run() {
+        System.out.println("I'm going to swim");
+    }
+});
+
+thread1.start();
+thread2.start();
+System.out.println("I'm going home");
+
+Ans:
+the walk,swim,home can appear any order
+
+================================================
+public class Example {
+ 2.        private Map<Integer, String>  idToNameMap;
+ 3.
+ 4.        private static long numberOfInstances = 0;
+ 5.
+ 6.        public Example() {
+ 7.            this.idToNameMap = new HashMap<>();
+ 8.            numberOfInstances++;
+ 9.        }
+ 10.
+11.        public List<String> getAllNames() {
+12.            int count = idToNameMap.size();
+13.            List<String> allNames = new ArrayList<>();
+14.
+15.            allNames.addAll(idToNameMap.values());
+16.
+17.            return allNames;
+18.       }
+19.}
+
+line 2
+idToNameMap is a reference allocated on the heap, and therefore can be shared among threads
+
+line 4
+numberOfInstances is a static primitive type variable, and as all static variables defined on the class level,
+is allocated on the heap which makes it accessible to all threads
+
+line 12
+the count variable is a primitive type allocated on the stack, and is therefore only accessible by the thread
+that is currently executing the getAllNames() method. If 2 threads are executing the getAllNames()
+simultaneously they have 2 different versions of the count variable on their stack
+
+line 13
+the reference allNames is local variable and is allocated on the stack. the reference refers to an object
+of type ArrayList<String> and that object is allocated on the heap
+===================================================
+
+public class Main {
+    public static void main(String [] args) {
+        SharedClass sharedObject = new SharedClass();
+
+        Thread thread1 = new Thread(() -> {
+            while (true) {
+                sharedObject.increment();
+            }
+        });
+
+        Thread thread2 = new Thread(() -> {
+            while (true) {
+                sharedObject.decrement();
+            }
+        });
+
+        thread1.start();
+        thread2.start();
+    }
+
+    static class SharedClass {
+        private int counter = 0;
+
+        public synchronized void increment() {
+            this.counter++;
+        }
+
+        public synchronized void decrement() {
+            this.counter--;
+        }
+    }
+}
+
+when thread1 is executing sharedObject.increment() thread2 can't execute sharedObject.decrement()
+when thread2 is executing sharedObject.increment() thread1 can't execute sharedObject.decrement()
+this is because both methods are synchronized and belongs to the same object
+
+===============================================================================================
+
+public class Main {
+    public static void main(String [] args) {
+        SharedClass sharedObject = new SharedClass();
+
+        Thread thread1 = new Thread(() -> {
+            while (true) {
+                sharedObject.incrementCounter1();
+            }
+        });
+
+        Thread thread2 = new Thread(() -> {
+            while (true) {
+                sharedObject.incrementCounter2();
+            }
+        });
+
+        thread1.start();
+        thread2.start();
+    }
+
+    static class SharedClass {
+        private int counter1 = 0;
+        private int counter2 = 0;
+
+        private Object lock1 = new Object();
+        private Object lock2 = new Object();
+
+        public void incrementCounter1() {
+            synchronized (lock1) {
+                this.counter1++;
+            }
+        }
+
+        public void incrementCounter2() {
+            synchronized (lock2) {
+                this.counter2++;
+            }
+        }
+    }
+}
+
+when thread1 executing sharedObject.incrementCounter1() thread2 can execute sharedObject.incrementCounter2
+that is because the synchronized blocks inside those methods, synchronize on different lock object
+
+==================================================================================
+
+ public class SharedClass {
+        private volatile long counter;
+
+        public void incrementCounter() {
+            counter++;
+        }
+
+        public long getCounter() {
+            return counter;
+        }
+ }
+only getCounter() method is atomic and free of race conditions
+
+=====================================================================================
+
+public class SharedClass {
+        private String name;
+
+        public void updateString(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+}
+
+both updateString(string name) and getName() methods are atomic and free of race conditions

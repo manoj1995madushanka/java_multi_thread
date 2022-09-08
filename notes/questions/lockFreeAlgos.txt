@@ -1,0 +1,122 @@
+Multiple threads have an instance of the Metric class.
+
+    public class Metric {
+        private long count;
+        private long sum;
+
+        public void addSample(int sample) {
+            sum += sample;
+            count++;
+        }
+
+        public double getAverage() {
+            double average = (double)sum/count;
+            reset();
+            return average;
+        }
+
+        private void reset() {
+            count = 0;
+            sum = 0;
+        }
+    }
+The threads use this instance to measure the execution time of a particular critical piece of code.
+
+Example:
+
+    private Metric metric;
+    public criticalMethod() {
+        long start = System.currentTimeMillis();
+
+        someVeryImportantOperation();
+
+        long end =  System.currentTimeMillis();;
+
+        metric.addSample(end - start);
+    }
+
+Another thread called Emitter that also has a reference to that instance of the class,
+calls the getAverage(); method once a minute.
+That thread sends the average of the execution of criticalMethod(), for the last minute, to an external server.
+
+Question :
+Is the class thread safe?
+
+ANSWER:
+NO
+================================================================================================================
+
+The previous code was modified in the attempt to make Metric a thread safe class.
+
+We know that many threads are calling methods of this class concurrently,
+and we would like to make it lock-free if possible
+
+    public class Metric {
+        private AtomicLong count = new AtomicLong(0);
+        private AtomicLong sum = new AtomicLong(0);
+
+        public void addSample(long sample) {
+            sum.addAndGet(sample);
+            count.incrementAndGet();
+        }
+
+        public double getAverage() {
+            double average = (double)sum.get()/count.get();
+            reset();
+            return average;
+        }
+
+        private void reset() {
+            count.set(0);
+            sum.set(0);
+        }
+    }
+Is the class thread safe now?
+
+ANSWER:
+NO
+=================================================================================
+
+Now that we realized that the previous approach had a lot of race conditions,
+we know that just by turning all the variables in a shared class into atomic variables
+is not enough to make a class thread safe.
+
+When designing lock-free data structures, we need to rethink how we design our classes from ground up:
+
+Here is an attempt to make the class thread safe
+
+private static class Metric {
+    private static class InternalMetric{
+        public long count;
+        public long sum;
+    }
+
+    private AtomicReference<InternalMetric> internalMetric = new AtomicReference<>(new InternalMetric());
+
+    public void addSample(long sample) {
+        InternalMetric currentState;
+        InternalMetric newState;
+        do {
+            currentState = internalMetric.get();
+            newState = new InternalMetric();
+            newState.sum = currentState.sum + sample;
+            newState.count = currentState.count + 1;
+        } while (!internalMetric.compareAndSet(currentState, newState));
+    }
+
+    public double getAverage() {
+        InternalMetric newResetState = new InternalMetric();
+        InternalMetric currentState;
+        double average;
+        do {
+            currentState = internalMetric.get();
+            average = (double)currentState.sum / currentState.count;
+        } while (!internalMetric.compareAndSet(currentState,  newResetState));
+
+        return average;
+    }
+}
+Question :
+
+Is the class thread safe now?
+YES

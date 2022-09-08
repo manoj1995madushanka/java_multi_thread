@@ -1,0 +1,52 @@
+public static void main(String[] args) {
+    SharedClass sharedClass = new SharedClass();
+
+    Thread thread1 = new Thread(() -> sharedClass.method1());
+    Thread thread2 = new Thread(() -> sharedClass.method2());
+
+    thread1.start();
+    thread2.start();
+}
+
+private static class SharedClass {
+    int a = 0;
+    int b = 0;
+
+    public void method1() {
+        int local1 = a;
+        this.b = 1;
+    }
+
+    public void method2() {
+        int local2 = b;
+        this.a = 2;
+    }
+}
+
+As we can see method1() and method2() are 2 methods that are executed concurrently by 2 threads.
+Thread 1        Thread 2
+1: local1 = a;  3: local2 = b;
+2: b = 1;       4: a = 2;
+
+Think about a possible scenario, in which after the execution of both method1()
+and method2() the values of the local variables are:
+local1 = 2
+local2 = 1
+Consider everything we've learned so far.
+
+ANSWER =>
+It's possible since each of the methods executes 2 instructions that do not depend on each other.
+Therefore, the compiler is free to re-arrange the order of the instructions.
+
+If method1() is re-arrange to
+public void method1() {
+    this.b = 1;
+    int local1 = a;
+}
+
+Then the following order of execution is possible:
+Thread 1: b = 1
+Thread 2: local2 = b (1)
+Thread 2: a = 2
+Thread 1: local1 = a (2)
+

@@ -1,0 +1,54 @@
+public static class CriticalOperation implements Runnable {
+    private ReentrantLock lock = new ReentrantLock();
+    /// other shared variables
+
+    @Override
+    public void run() {
+        lock.lock();
+        someOperation();
+        lock.unlock();
+    }
+
+    private void someOperation() {
+        //May throw a RuntimeException
+    }
+}
+What is the potential danger with the current implementation?
+
+If someOperation() throws a RuntimeException the lock will remain locked forever.
+So all the threads that try to execute lock.lock() will get blocked forever.
+We need to surround someOperation() with a try block, and the lock.unlock() with a finally block.
+========================================================================================================
+
+We fixed the previous code by surrounding the critical section with a try
+block and putting the lock.unlock() method inside the finally block.
+We also decided to use lock.tryLock() instead of lock.lock() to avoid blocking:
+
+public static class CriticalOperation implements Runnable {
+    private ReentrantLock lock = new ReentrantLock();
+
+    @Override
+    public void run() {
+        lock.tryLock();
+        try {
+            someOperation();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private void someOperation() {
+        //This method may throw a RuntimeException
+    }
+}
+
+Is this implementation safe?
+
+It is incorrect!
+
+If the lock has already been acquired by another thread and lock.tryLock();
+returns false, we will still go ahead and execute someOperation();
+which may involve modifying shared variables and resources.
+
+So our critical section is virtually unprotected with this implementation
+and we may have race conditions in our class.

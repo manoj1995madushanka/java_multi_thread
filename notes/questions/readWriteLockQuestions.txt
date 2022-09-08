@@ -1,0 +1,57 @@
+8 threads have access to an instance of the following class:
+    public class DatabaseConnectionClass {
+       ReentrantLock lock = new ReentrantLock();
+
+       public void update(int key, int value) {
+           lock.lock();
+           try {
+               writeToDatabase(key, value); //slow
+           } finally {
+               lock.unlock();
+           }
+       }
+
+       public int read(int key) {
+           lock.lock();
+           try {
+               return readFromDatabase(key); //slow
+           } finally {
+               lock.unlock();
+           }
+       }
+   }
+
+How many threads can execute writeToDatabase(key, value); in the same time?
+ANSWER : 1
+===================================================================================
+
+also 1 thread is can execute readFromDatabase(key) in the same time
+===================================================================================
+
+public class DatabaseConnectionClass {
+  ReadWriteLock lock = new ReentrantReadWriteLock();
+
+  Lock readLock = lock.readLock();
+  Lock writeLock = lock.writeLock();
+
+  public void update(int key, int value) {
+    writeLock.lock();
+    try {
+       writeToDatabase(key, value); //slow
+    } finally {
+       writeLock.unlock();
+    }
+   }
+
+  public int read(int key) {
+    readLock.lock();
+    try {
+       return readFromDatabase(key); //slow
+    } finally {
+       readLock.unlock();
+    }
+  }
+}
+
+then can access only 1 thread for write and 8 threads for read.
+
