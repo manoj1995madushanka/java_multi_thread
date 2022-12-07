@@ -3,25 +3,25 @@ why we need multithread? \
 &ensp;    performance -> parallelism \
 
 examples of poor responsiveness \
-    waiting for customer support \
-    late response from a person \
-    no feedback from a application \
+&ensp;    waiting for customer support \
+&ensp;    late response from a person \
+&ensp;    no feedback from a application \
 
 concurrency =multitasking \
 
 we don't need multiple cpu cores for achieve multi tasking \
 
 Context Switch Cost \
-    context switch is not cheap, and is the price of multitasking(concurrency) \
-    Same as we humans when we multitask - takes time to focus \
-    Each thread consumes resources in the CPU and memory \
+&ensp;    context switch is not cheap, and is the price of multitasking(concurrency) \
+&ensp;    Same as we humans when we multitask - takes time to focus \
+&ensp;    Each thread consumes resources in the CPU and memory \
 
 When we switch to a different thread: \
-    Store data for one thread \
-    Restore data for another thread \
+&ensp;    Store data for one thread \
+&ensp;    Restore data for another thread \
 
 Thread scheduling - Dynamic Priority \
-    Dynamic Priority = Stati Priority + Bonus \
+&ensp;    Dynamic Priority = Stati Priority + Bonus \
 
 Static Priority is set by the developer programmatically \
 Bonus is adjusted by the operating system in every epoch, for each thread \
@@ -29,33 +29,33 @@ Using dynamic priority, the OS will give preference for interactive threads(such
 OS will give preference to threads that did not complete in the last epochs or did not get enogh time to run - preventing starvation \
 
 When to prefer multithreaded architecture \
-    prefer if the tasks share a lot of data \
-    threads are much faster to create and destroy \
-    switching between threads of the same process is faster(shorter context switches) \
+&ensp;    prefer if the tasks share a lot of data \
+&ensp;    threads are much faster to create and destroy \
+&ensp;    switching between threads of the same process is faster(shorter context switches) \
 
 
 ======================Thread Interruption========= \
 why we need to do thread interruption \
-    Threads consume resources \
+&ensp;    Threads consume resources \
         Memory and kernal resources \
         CPU cycles and cache memory \
-    If a thread finished its work, but the application is still running, we want to clean up the thread's resources \
-    If a thread is misbehaving, we want to stop it \
-    By default, the application will not stop as long as at least one thread is still running \
+&ensp;    If a thread finished its work, but the application is still running, we want to clean up the thread's resources \
+&ensp;    If a thread is misbehaving, we want to stop it \
+&ensp;    By default, the application will not stop as long as at least one thread is still running \
 
 When can we interrupt a Thread \
-    If the thread is executing a method that throws an InterruptedException \
-    If the thread's code is handling the interrupt signal explicitly \
+&ensp;    If the thread is executing a method that throws an InterruptedException \
+&ensp;    If the thread's code is handling the interrupt signal explicitly \
 
 When thread is interrupt that need to handle inside the thread otherwise it is not interrupt \
 
 Daemon Thread
-    Background threads that do not prevent the application from existing if the main thread terminates. \
+&ensp;    Background threads that do not prevent the application from existing if the main thread terminates. \
 
 Daemon Threads Scenarios \
-    Background tasks, that should not block our application from terminating. \
+&ensp;    Background tasks, that should not block our application from terminating. \
         file saving thread in a text editor \
-    Code in a worker thread is not under our control, and we don't want it to block our application from terminating \
+&ensp;    Code in a worker thread is not under our control, and we don't want it to block our application from terminating \
         worker thread that uses an external library \
 
 If the method does not respond to the interrupt signal by throwing the interruptedException, we
@@ -65,11 +65,11 @@ To prevent a thread from blocking our app from exiting, we set the thread to be 
 
 ===================================Joining Thread============================= \
 Why we need thread coordination? \
-    Different threads run independently \
-    Order of execution is out of our control \
+&ensp;    Different threads run independently \
+&ensp;    Order of execution is out of our control \
 
 Thread coordination - Naive solution \
-    Thread B runs in a loop and keeps checking if Thread A's result is ready. \
+&ensp;    Thread B runs in a loop and keeps checking if Thread A's result is ready. \
 
 we can use thread.join() method to coordinate threads \
 
@@ -92,17 +92,17 @@ java.util.concurrent.atomic package useful for atomic operations \
 
 ================================Critical Section============================== \
 Synchronized Keyword \
-    Locking mechanism \
-    Used to restrict access to a critical section or entire method to a single thread at a time \
-    Synchronized block is called reentrant \
-    A thread cannot prevent itself from entering a critical section \
+&ensp;    Locking mechanism \
+&ensp;    Used to restrict access to a critical section or entire method to a single thread at a time \
+&ensp;    Synchronized block is called reentrant \
+&ensp;    A thread cannot prevent itself from entering a critical section \
 
 =====================Race Condition and Data Race==================================== \
 Race Condition \
-    condition when multiple threads are accessing a shared resources \
-    At least one thread is modifying the resource \
-    The timing of threads scheduling may cause incorrect results \
-    The core of the problem is non-atomic operations performed on the shared resource \
+&ensp;    condition when multiple threads are accessing a shared resources \
+&ensp;    At least one thread is modifying the resource \
+&ensp;    The timing of threads scheduling may cause incorrect results \
+&ensp;    The core of the problem is non-atomic operations performed on the shared resource \
 Solution - Race Condition \
     Identification of the critical section where the race condition is happening. \
     Protection of the critical section by a synchronized block \
