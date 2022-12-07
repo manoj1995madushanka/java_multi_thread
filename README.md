@@ -1,6 +1,6 @@
-why we need multithread?
-    responsiveness -> concurrency
-    performance -> parallelism
+why we need multithread? \
+    responsiveness -> concurrency \
+    performance -> parallelism \
 
 examples of poor responsiveness
     waiting for customer support
